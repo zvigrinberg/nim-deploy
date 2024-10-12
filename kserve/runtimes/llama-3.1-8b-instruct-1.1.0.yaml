@@ -1,5 +1,5 @@
 apiVersion: serving.kserve.io/v1alpha1
-kind: ClusterServingRuntime
+kind: ServingRuntime
 metadata:
   name: nvidia-nim-llama-3.1-8b-instruct-1.1.0
 spec:
@@ -37,6 +37,9 @@ spec:
     volumeMounts:
     - mountPath: /dev/shm
       name: dshm
+    - name: model-cache
+      subPath: cache
+      mountPath: /mnt/models/
   imagePullSecrets:
   - name: ngc-secret
   protocolVersions:
@@ -52,3 +55,7 @@ spec:
       medium: Memory
       sizeLimit: 16Gi
     name: dshm
+
+  - name: model-cache
+    persistentVolumeClaim:
+      claimName: nvidia-nim-pvc

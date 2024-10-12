@@ -6,6 +6,10 @@ metadata:
   name: llama-3-1-8b-instruct-1xgpu
 spec:
   predictor:
+    tolerations:
+      - key: odh-notebook
+        operator: Exists
+        effect: NoSchedule
     minReplicas: 1
     model:
       modelFormat:
@@ -16,4 +20,7 @@ spec:
         requests:
           nvidia.com/gpu: "1"
       runtime: nvidia-nim-llama-3.1-8b-instruct-1.1.0
-      storageUri: pvc://nvidia-nim-pvc/
+#      storageUri: pvc://nvidia-nim-pvc/
+
+    nodeSelector:
+      nvidia.com/gpu.product: NVIDIA-A100-SXM4-40GB
