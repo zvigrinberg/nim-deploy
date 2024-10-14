@@ -124,7 +124,7 @@ For additional example queries see the model card on [build.nvidia.com](https://
 
 1. Create Namespace, PV and PVC as described above ( with same names) or run in order to create pvc and pull secret and secrets 
 ```shell
-oc new-project namespace_name
+oc new-project morpheus-cn-models-nim
 export NGC_API_KEY=
 export HF_TOKEN=
 export NODE_NAME=
