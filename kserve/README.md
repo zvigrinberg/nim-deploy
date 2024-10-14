@@ -160,7 +160,7 @@ oc expose --name=llama-3-1-8b-instruct-1xgpu-predictor-00001-direct deployment/l
 
 7. Expose service as route for external access
 ```shell
-oc expose -- --name=llama-3-1-8b-instruct-predictor-new svc/llama-3-1-8b-instruct-1xgpu-predictor-00001-direct
+oc expose --name=llama-3-1-8b-instruct-predictor-new svc/llama-3-1-8b-instruct-1xgpu-predictor-00001-direct
 ```
 
 8 Try it out
