@@ -13,7 +13,7 @@ spec:
           effect: NoSchedule
       initContainers:
         - name: create-cache-dir
-          image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.0
+          image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.2
           command: ["bash","-c","mkdir -p /mnt/models/cache"]
           volumeMounts:
             - mountPath: /mnt/models
