@@ -54,6 +54,18 @@ You can launch `llama3-8b-instruct` using a default configuration while only set
 helm --namespace nim install my-nim nim-llm/ --set model.ngcAPIKey=$NGC_API_KEY --set persistence.enabled=true
 ```
 
+## Launching a NIM llama3.1-8b-instruct, including toleration to schedule on A100 Node
+
+```bash
+helm install my-nim nim-llm/ --set persistence.enabled=true \
+ --set model.ngcAPIKey=$NGC_API_KEY \
+ --set image.repository=nvcr.io/nim/meta/llama-3.1-8b-instruct \ 
+ --set image.tag=latest \ 
+ --set tolerations[0].key=odh-notebook \
+ --set tolerations[0].operator=Exists \ 
+ --set tolerations[0].effect=NoSchedule
+```
+
 ## Using a custom values file
 
 When deploying NIMs there are several values that can be customized to control factors such as scaling, metrics collection, resource use, and most general AI model selection.

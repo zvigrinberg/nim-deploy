@@ -7,13 +7,24 @@ spec:
     metadata:
       name: nim-download-profile-pod
     spec:
+      tolerations:
+        - key: odh-notebook
+          operator: Exists
+          effect: NoSchedule
+      initContainers:
+        - name: create-cache-dir
+          image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.2
+          command: ["bash","-c","mkdir -p /mnt/models/cache"]
+          volumeMounts:
+            - mountPath: /mnt/models
+              subPath: cache
+              name: model-cache
       containers:
       - name: nim-profile-single
         # Update the image name to the NIM that will be deployed in production
-        image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.0
-        
+        image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.2
         # Update the profile name to either the hash or the human-readable name that will be used in production
-        args: ["download-to-cache", "--profile", "tensorrt_llm-l40s-bf16-tp2-throughput"]
+        args: ["download-to-cache", "--profile", "3bb4e8fe78e5037b05dd618cebb1053347325ad6a1e709e0eb18bb8558362ac5"]
         env:
         - name: NIM_CACHE_PATH
           value: /mnt/models/cache
@@ -24,6 +35,7 @@ spec:
               key: NGC_API_KEY    
         volumeMounts:
         - name: model-cache
+          subPath: cache
           mountPath: /mnt/models
       imagePullSecrets:
       - name: ngc-secret

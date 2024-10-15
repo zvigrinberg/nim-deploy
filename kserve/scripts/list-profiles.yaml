@@ -10,7 +10,7 @@ spec:
       containers:
       - name: nim-profile
         # Update the image name to the NIM that will be deployed in production
-        image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.1.0
+        image: nvcr.io/nim/meta/llama-3.1-8b-instruct:1.2.2
         args: ["list-model-profiles"]
         env:
         - name: NIM_CACHE_PATH

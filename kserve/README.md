@@ -119,3 +119,60 @@ curl http://${KSERVE_URL}/metrics
 ```
 
 For additional example queries see the model card on [build.nvidia.com](https://build.nvidia.com/meta/llama3-70b)
+
+## Build Llama3.1-8b on Openshift 
+
+1. Create Namespace, PV and PVC as described above ( with same names) or run in order to create pvc and pull secret and secrets 
+```shell
+oc new-project morpheus-cn-models-nim
+export NGC_API_KEY=
+export HF_TOKEN=
+export NODE_NAME=
+
+
+bash scripts/setup.sh
+```
+
+2. Download the profile to PVC
+```shell
+oc apply -f scripts/download-profile.yaml
+```
+
+3. Download the model stuff to the PVC
+```shell
+oc apply -f scripts/download-single.yaml
+```
+
+4. Deploy the runtime needed for the LLM deployment
+```shell
+oc apply -f runtimes/llama-3.1-8b-instruct-1.1.2.yaml
+```
+
+5. Deploy the LLM to the namespace.
+```shell
+oc apply -f nim-models/llama-3.1-8b-instruct_1xgpu_1.1.2.yaml
+```
+
+6. Create direct service to model
+```shell
+oc expose --name=llama-3-1-8b-instruct-1xgpu-predictor-00001-direct deployment/llama-3-1-8b-instruct-1xgpu-predictor-00001-deployment --port 80 --targetPort 8000
+```
+
+7. Expose service as route for external access
+```shell
+oc expose --name=llama-3-1-8b-instruct-predictor-new svc/llama-3-1-8b-instruct-1xgpu-predictor-00001-direct
+```
+
+8 Try it out
+```shell
+curl -X 'POST' 'http://llama-3-1-8b-instruct-predictor-new-morpheus-cn-models-nim.apps.ai-dev03.kni.syseng.devcluster.openshift.com/v1/chat/completions' \
+ -H "Content-Type: application/json" \
+ -d '{
+    "model": "meta/llama-3.1-8b-instruct",
+    "messages": [{"role":"user","content":"What is KServe?"}],
+    "temperature": 0.5,   
+    "top_p": 1,
+    "max_tokens": 1024,
+    "stream": false 
+    }'
+```
