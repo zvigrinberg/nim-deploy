@@ -61,7 +61,7 @@ helm install my-nim nim-llm/ --set persistence.enabled=true \
  --set model.ngcAPIKey=$NGC_API_KEY \
  --set image.repository=nvcr.io/nim/meta/llama-3.1-8b-instruct \ 
  --set image.tag=latest \ 
- --set tolerations[0].key=odh-notebook \
+ --set tolerations[0].key=p4-gpu \
  --set tolerations[0].operator=Exists \ 
  --set tolerations[0].effect=NoSchedule
 ```
