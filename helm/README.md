@@ -54,9 +54,13 @@ You can launch `llama3-8b-instruct` using a default configuration while only set
 helm --namespace nim install my-nim nim-llm/ --set model.ngcAPIKey=$NGC_API_KEY --set persistence.enabled=true
 ```
 
-## Launching a NIM llama3.1-8b-instruct, including toleration to schedule on A100 Node
+## Launching a NIM llama3.1-8b-instruct, including toleration to schedule on A100 Node on Openshift
 
 ```bash
+#Change to another service account name, but also set `serviceAccount.name` to this name and also `serviceAccount.create` = "true" in helm install  
+export SERVICE_ACCOUNT_NAME=default
+oc adm policy add-scc-to-user -z $SERVICE_ACCOUNT_NAME anyuid
+
 helm install my-nim nim-llm/ --set persistence.enabled=true \
  --set model.ngcAPIKey=$NGC_API_KEY \
  --set image.repository=nvcr.io/nim/meta/llama-3.1-8b-instruct \ 
