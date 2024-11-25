@@ -61,7 +61,7 @@ helm --namespace nim install my-nim nim-llm/ --set model.ngcAPIKey=$NGC_API_KEY 
 export SERVICE_ACCOUNT_NAME=default
 oc adm policy add-scc-to-user -z $SERVICE_ACCOUNT_NAME anyuid
 
-helm install my-nim nim-llm/ --set persistence.enabled=true \
+helm install nim-llm nim-llm/ --set persistence.enabled=true \
  --set model.ngcAPIKey=$NGC_API_KEY \
  --set image.repository=nvcr.io/nim/meta/llama-3.1-8b-instruct \ 
  --set image.tag=latest \ 
