@@ -58,15 +58,15 @@ helm --namespace nim install my-nim nim-llm/ --set model.ngcAPIKey=$NGC_API_KEY 
 1. Create service accout
 ```shell
 export SERVICE_ACCOUNT_NAME=nim-llm-sa
-oc create serviceaccount $SERVICE_ACCOUNT_NAME
+oc create serviceaccount $SERVICE_ACCOUNT_NAME -n nim
 ```
 2. add `anyuid` `SecurityContextConstraint` privilege to the created service account
 ```shell
-oc adm policy add-scc-to-user -z $SERVICE_ACCOUNT_NAME anyuid
+oc adm policy add-scc-to-user -z $SERVICE_ACCOUNT_NAME anyuid -n nim
 ```
 3. Deploy the chart
 ```bash
-helm install nim-llm nim-llm/ --set persistence.enabled=true \
+helm -n nim install nim-llm nim-llm/ --set persistence.enabled=true \
  --set model.ngcAPIKey=$NGC_API_KEY \
  --set image.repository=nvcr.io/nim/meta/llama-3.1-8b-instruct \ 
  --set image.tag=latest \
